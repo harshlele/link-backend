@@ -1,6 +1,6 @@
-const express = require('express')
-const {MongoClient} = require('mongodb')
-const app = express()
+const express = require('express');
+const {MongoClient} = require('mongodb');
+const app = express();
 //load config from .env files
 require('dotenv').config();
 
@@ -46,9 +46,9 @@ app.post("/shorten",async (req,res) => {
   res.send(JSON.stringify(response));
 });
 
-app.post("/link", async (req,res) => {
+app.post("/long", async (req,res) => {
   let response = {};
-  const doc = await getLink({shortened: req.body.link});
+  const doc = await getLink({shortened: req.body.short});
   if(doc == null){
     response.success = 0;
   }
@@ -61,7 +61,20 @@ app.post("/link", async (req,res) => {
   res.status(200);
   res.setHeader('Content-Type','application/json');
   res.send(JSON.stringify(response));
-})
+});
+
+app.get("/:short",async (req,res) => {
+  const doc = await getLink({shortened: req.params.short});
+  res.status(302);
+  if(doc != null){
+    res.setHeader('Location',doc.link);
+  }
+  else{
+    res.setHeader('Location',"/");
+  }
+  res.end();
+  
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
