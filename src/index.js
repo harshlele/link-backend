@@ -19,10 +19,9 @@ async function storeLink(data){
   return result;
 }
 
-async function getLink(link){
+async function getLink(query){
   if(!client.isConnected()) await client.connect();
   const links = client.db("links").collection("link");
-  const query = {link};
   const document = await links.findOne(query);
   return document;
 }
@@ -30,7 +29,7 @@ async function getLink(link){
 app.post("/shorten",async (req,res) => {
 
   let response = {};
-  const doc = await getLink(req.body.url);
+  const doc = await getLink({link: req.body.url});
   if(doc == null){
     response = {shortened: (Math.random() +1).toString(36).substr(2, 5), link: req.body.url};
     const result = await storeLink(response);
@@ -38,9 +37,26 @@ app.post("/shorten",async (req,res) => {
   }
   else{
     response = {...doc};
-    response.success = "1";
+    response.success = 1;
   }
   delete response._id;
+
+  res.status(200);
+  res.setHeader('Content-Type','application/json');
+  res.send(JSON.stringify(response));
+});
+
+app.post("/link", async (req,res) => {
+  let response = {};
+  const doc = await getLink({shortened: req.body.link});
+  if(doc == null){
+    response.success = 0;
+  }
+  else{
+    response = {...doc};
+    response.success = 1;
+    delete response._id;
+  }
 
   res.status(200);
   res.setHeader('Content-Type','application/json');
