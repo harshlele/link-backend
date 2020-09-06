@@ -80,11 +80,6 @@ app.get("/:short",async (req,res) => {
 
 module.exports.handler = serverless(app);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-});
-
-
 process.on('SIGTERM',async () => {
   if(client.isConnected()) await client.close();
 });
