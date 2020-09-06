@@ -1,6 +1,8 @@
 const express = require('express');
 const {MongoClient} = require('mongodb');
 const app = express();
+const serverless = require('serverless-http');
+
 //load config from .env files
 require('dotenv').config();
 
@@ -75,6 +77,8 @@ app.get("/:short",async (req,res) => {
   res.end();
   
 });
+
+module.exports.handler = serverless(app);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
