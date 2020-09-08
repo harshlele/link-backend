@@ -79,6 +79,8 @@ app.get("/:short",async (req,res) => {
 });
 
 module.exports.handler = serverless(app);
+module.exports.app = app;
+
 
 process.on('SIGTERM',async () => {
   if(client.isConnected()) await client.close();
