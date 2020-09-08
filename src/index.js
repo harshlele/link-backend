@@ -78,6 +78,8 @@ app.get("/:short",async (req,res) => {
   
 });
 
+app.get("/.netlify/functions/index/:short",(req,res) => res.redirect(`/${req.params.short}`));
+
 module.exports.handler = serverless(app);
 module.exports.app = app;
 
