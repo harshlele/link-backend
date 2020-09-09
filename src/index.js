@@ -65,7 +65,7 @@ app.post(["/.netlify/functions/index/long","/long"], async (req,res) => {
   res.send(JSON.stringify(response));
 });
 
-app.get(["/.netlify/functions/index/short","/:short"],async (req,res) => {
+app.get(["/.netlify/functions/index/:short","/:short"],async (req,res) => {
   const doc = await getLink({shortened: req.params.short});
   res.status(302);
   if(doc != null){
