@@ -4,12 +4,11 @@
   "description": "backend for link shortener",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/local-server.js",
+    "start": "node local/local-server.js",
     "build": "netlify-lambda build src"
   },
   "keywords": [
-    "[\"link",
-    "shortener\"]"
+    "link shortener"
   ],
   "author": "",
   "license": "MIT",

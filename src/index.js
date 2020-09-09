@@ -28,7 +28,7 @@ async function getLink(query){
   return document;
 }
 
-app.post("/shorten",async (req,res) => {
+app.post(["/.netlify/functions/index/shorten","/shorten"],async (req,res) => {
 
   let response = {};
   const doc = await getLink({link: req.body.url});
@@ -48,7 +48,7 @@ app.post("/shorten",async (req,res) => {
   res.send(JSON.stringify(response));
 });
 
-app.post("/long", async (req,res) => {
+app.post(["/.netlify/functions/index/long","/long"], async (req,res) => {
   let response = {};
   const doc = await getLink({shortened: req.body.short});
   if(doc == null){
@@ -65,7 +65,7 @@ app.post("/long", async (req,res) => {
   res.send(JSON.stringify(response));
 });
 
-app.get("/:short",async (req,res) => {
+app.get(["/.netlify/functions/index/short","/:short"],async (req,res) => {
   const doc = await getLink({shortened: req.params.short});
   res.status(302);
   if(doc != null){
